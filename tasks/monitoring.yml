@@ -1,0 +1,21 @@
+- name: Query for a default workspace
+  azure_rm_loganalyticsworkspace_facts:
+      resource_group: "{{ resource_group }}"
+  register: workspaces
+
+- name: Create a new workspace
+  azure_rm_loganalyticsworkspace:
+      name: "{{ name }}{{ rpfx }}"
+      resource_group: "{{ resource_group }}"
+  register: workspace_instance
+  when: workspaces.workspaces | length == 0
+
+- name: Save workspace id
+  set_fact:
+      workspace_resource_id: "{{ workspace_instance.id }}"
+  when: workspace_instance is defined and 'id' in workspace_instance
+
+- name: Using the default workspace {{ workspaces.workspaces[0].name }}
+  set_fact:
+      workspace_resource_id: "{{ workspaces.workspaces[0].id }}"
+  when: workspaces.workspaces | length > 0

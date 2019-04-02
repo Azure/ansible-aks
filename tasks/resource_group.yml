@@ -1,0 +1,10 @@
+- name: Ensure resource group exist
+  azure_rm_resourcegroup_facts:
+      name: "{{ resource_group }}"
+  register: rg
+
+- name: Create resource group
+  azure_rm_resourcegroup:
+      name: "{{ resource_group }}"
+      location: "{{ location }}"
+  when: rg.ansible_facts.azure_resourcegroups | length == 0

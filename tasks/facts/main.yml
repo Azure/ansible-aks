@@ -1,0 +1,37 @@
+- debug:
+      var: aks
+
+- set_fact:
+      location_bak: "{{ aks.location }}"
+      dns_prefix_bak: "{{ aks.properties.dnsPrefix }}"
+      kubernetes_version_bak: "{{ aks.properties.kubernetesVersion }}"
+      enable_rbac_bak: "{{ aks.properties.enableRBAC }}"
+
+- include_tasks: addon_profile.yml
+  when: "'addonProfiles' in aks.properties"
+  vars:
+     profile: "{{ aks.properties.addonProfiles }}"
+
+- include_tasks: linux_profile.yml
+  when: "'linuxProfile' in aks.properties"
+  vars:
+      profile: "{{ aks.properties.linuxProfile }}"
+
+- include_tasks: agent_pool_profile.yml
+  when: aks.properties.agentPoolProfiles | length > 0
+  vars:
+      profile: "{{ aks.properties.agentPoolProfiles[0] }}"
+
+- include_tasks: network_profile.yml
+  when: "'networkProfile' in aks.properties"
+  vars:
+      profile: "{{ aks.properties.networkProfile }}"
+
+- include_tasks: aad_profile.yml
+  when: "'aadProfile' in aks.properties"
+  vars:
+      profile: "{{ aks.properties.aadProfile }}"
+
+- set_fact:
+      service_principal_bak: "{{ aks.properties.servicePrincipalProfile.clientId }}"
+  when: "'servicePrincipalProfile' in aks.properties"

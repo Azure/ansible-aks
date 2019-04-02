@@ -1,0 +1,117 @@
+---
+# tasks file for aks
+- include_tasks: resource_group.yml
+
+- name: Get current status of AKS
+  azure_rm_aks_facts:
+      name: "{{ name }}"
+      resource_group: "{{ resource_group }}"
+  register: aks_facts
+
+- include_tasks: facts/main.yml
+  when: aks_facts.aks | length == 1
+  vars:
+    aks: "{{ aks_facts.aks[0] }}"
+
+- name: Apply original value to unset parameters
+  set_fact:
+      "{{ item }}": "{{ vars[item ~ '_bak'] }}"
+  when: "{{ item }} is not defined and {{ item ~ '_bak' }} is defined"
+  with_items: "{{ parameter_list }}"
+
+- name: Prepare random suffix
+  set_fact:
+      rpfx: "{{ resource_group | hash('md5') | truncate(5, True, '') }}"
+
+# Monitoring enabled
+- name: Get or create log analytics workspace for monitoring
+  include_tasks: monitoring.yml
+  when: monitoring is defined and monitoring and workspace_resource_id is not defined
+
+# virtual node enabled
+- name: Virtual node addon should use Azure-CNI network plugin
+  assert:
+      that:
+          - network_plugin == 'azure'
+  when: virtual_node is defined and virtual_node
+
+- name: Get or create subnet for virtual node
+  include_tasks: subnet.yml
+  vars:
+      address: 10.240.0.0/16
+      subnet_name: "{{ name }}{{ rpfx }}"
+      parameter: "vnet_subnet_id"
+  when: virtual_node is defined and virtual_node and vnet_subnet_id is not defined
+
+- name: Get or create virtual node subnet for virtual node
+  include_tasks: subnet.yml
+  vars:
+      address: 10.241.0.0/16
+      subnet_name: "{{ name }}{{ rpfx }}virtualnode"
+      parameter: virtual_node_subnet_id
+  when: virtual_node is defined and virtual_node and virtual_node_subnet_id is not defined
+
+# network plugin
+- name: "Check {{ item }} is set"
+  assert:
+      that:
+          - "{{ item }} is defined"
+  with_items:
+      - docker_bridge_cidr
+      - dns_service_ip
+      - service_cidr
+  when: network_plugin is defined
+
+- name: Get or create subnet for virtual node
+  include_tasks: subnet.yml
+  vars:
+      address: 10.240.0.0/16
+      subnet_name: "{{ name }}{{ rpfx }}"
+      parameter: "vnet_subnet_id"
+  when: network_plugin is defined
+
+# network plugin - azure
+
+# network plugin - kubenet
+- name: Check pod_cidr is set
+  assert:
+      that: pod_cidr is defined
+  when: network_plugin is defined and network_plugin == 'kubenet'
+
+- include_tasks: parameter/main.yml
+  name: Construct AKS module parameters
+
+# get k8s version
+- include_tasks: k8s_version.yml
+  name: Get supported kubernetes versions
+  when: kubernetes_version is not defined
+
+# create or update AKS
+- name: Create or update AKS state
+  azure_rm_aks:
+      name: "{{ name }}"
+      resource_group: "{{ resource_group }}"
+      location: "{{ location }}"
+      dns_prefix: "{{ dns_prefix }}"
+      kubernetes_version: "{{ kubernetes_version }}"
+      enable_rbac: "{{ enable_rbac }}"
+      service_principal: "{{ sp | default(omit) }}"
+      linux_profile:
+          admin_username: "{{ admin_username }}"
+          ssh_key: "{{ ssh_key }}"
+      agent_pool_profiles: "{{ [agent_pool] | default(omit) }}"
+      network_profile: "{{ network_profile | default(omit) }}"
+      aad_profile: "{{ aad_profile | default(omit) }}"
+      addon: "{{ addon | default(omit) }}"
+#   check_mode: yes
+  register: aks
+
+- debug:
+       var: aks
+
+# network plugin - kubenet
+- name: Associate network resources with the node subnet
+  include_tasks: kubenet.yml
+  vars:
+      resource_group_secondary: "{{ aks.node_resource_group }}"
+  when: network_plugin is defined and network_plugin == 'kubenet' and aks.id

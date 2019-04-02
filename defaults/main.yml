@@ -1,0 +1,53 @@
+---
+# defaults file for aks
+location_bak: eastus
+enable_rbac_bak: true
+
+# linux profile
+admin_username_bak: azureuser
+# ssh_key_bak: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+
+# agent pool profile
+node_count_bak: 3
+max_pods_bak: 110
+nodepool_name_bak: nodepool1
+node_osdisk_size_gb_bak: 30
+node_vm_size_bak: Standard_DS1_v2
+# not included
+storage_profile_bak: ManagedDisks
+os_type_bak: Linux
+
+parameter_list:
+  - http_application_routing
+  - monitoring
+  - virtual_node
+  - workspace_resource_id
+  - virtual_node_subnet_id
+  - aad_client_app_id
+  - aad_server_app_id
+  - aad_tenant_id
+  - admin_username
+  - dns_prefix
+  - dns_service_ip
+  - docker_bridge_cidr
+  - enable_rbac
+  - kubernetes_version
+  - location
+  - max_pods
+  - name
+  - network_plugin
+  - network_policy
+  - node_count
+  - node_osdisk_size_gb
+  - node_vm_size
+  - nodepool_name
+  - os_type
+  - pod_cidr
+  - resource_group
+  - service_cidr
+  - service_principal
+  - ssh_key
+  - storage_profile
+  - vnet_subnet_id
+  - aad_server_app_secret
+  - client_secret

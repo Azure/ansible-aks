@@ -1,0 +1,16 @@
+- set_fact:
+      # Required data
+      node_count_bak: "{{ profile.count }}"
+      node_vm_size_bak: "{{ profile.vmSize }}"
+      nodepool_name_bak: "{{ profile.name }}"
+
+- set_fact:
+      "{{ item.name }}": "{{ profile[item.value] }}"
+  with_items:
+      - {name: 'max_pods_bak', value: 'maxPods'}
+      - {name: 'vnet_subnet_id_bak', value: 'vnetSubnetID'}
+      - {name: 'storage_profile', value: 'storageProfile'}
+      - {name: 'node_osdisk_size_gb_bak', value: 'osDiskSizeGB'}
+      - {name: 'os_type', value: 'osType'}
+  when: "item.value in profile"
+      

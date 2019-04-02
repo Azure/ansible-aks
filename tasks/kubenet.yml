@@ -1,0 +1,35 @@
+- name: Get route table
+  azure_rm_routetable_facts:
+      resource_group: "{{ resource_group_secondary }}"
+  register: routetable
+
+- name: Get network security group
+  azure_rm_securitygroup_facts:
+      resource_group: "{{ resource_group_secondary }}"
+  register: nsg
+
+- name: Parse subnet id
+  set_fact:
+      subnet_name: "{{ vnet_subnet_id | regex_search(subnet_regex, '\\1') }}"
+      subnet_rg: "{{ vnet_subnet_id | regex_search(rg_regex, '\\1') }}"
+      subnet_vn: "{{ vnet_subnet_id | regex_search(vn_regex, '\\1') }}"
+  vars:
+      subnet_regex: '/subnets/(.+)'
+      rg_regex: '/resourceGroups/(.+?)/'
+      vn_regex: '/virtualNetworks/(.+?)/'
+
+- name: Get subnet parameters
+  azure_rm_subnet_facts:
+      name: "{{ subnet_name[0] }}"
+      resource_group: "{{ subnet_rg[0] }}"
+      virtual_network_name: "{{ subnet_vn[0] }}"
+  register: subnet_instance
+
+- name: Associate network resources with the node subnet
+  azure_rm_subnet:
+      name: "{{ subnet_instance.subnets[0].name }}"
+      address_prefix_cidr: "{{ subnet_instance.subnets[0].address_prefix_cidr }}"
+      resource_group: "{{  subnet_instance.subnets[0].resource_group }}"
+      virtual_network_name: "{{ subnet_instance.subnets[0].virtual_network_name }}"
+      security_group: "{{ nsg.ansible_facts.azure_securitygroups[0].id }}"
+      route_table: "{{ routetable.route_tables[0].id }}"

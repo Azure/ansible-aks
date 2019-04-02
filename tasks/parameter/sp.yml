@@ -1,0 +1,28 @@
+- name: Load service_principal in ansible auth parameter
+  set_fact:
+      service_principal: "{{ client_id }}"
+      client_secret: "{{ secret }}"
+  when: service_principal is not defined
+  ignore_errors: yes
+
+- name: Load service_princial in environment variables
+  set_fact:
+      service_principal: "{{ lookup('env', 'AZURE_CLIENT_ID') }}"
+      client_secret: "{{ lookup('env', 'AZURE_SECRET') }}"
+  when: service_principal is not defined
+  ignore_errors: yes
+
+- name: Load service_princial in ~/.azure/credentials
+  set_fact:
+      service_principal: "{{ lookup('ini', 'client_id section=default file=~/.azure/credentials') }}"
+      client_secret: "{{ lookup('ini', 'secret section=default file=~/.azure/credentials') }}"
+  when: service_principal is not defined or service_principal == ""
+  ignore_errors: yes
+
+- name: Set service principal parameter
+  set_fact:
+      sp: "{{ sp | default({}) | combine({ item.key: vars[item.value] }) }}"
+  with_items:
+      - {'key': 'client_id', 'value': 'service_principal' }
+      - {'key': 'client_secret', 'value': 'client_secret' }
+  when: service_principal is defined and {{ item.value }} is defined

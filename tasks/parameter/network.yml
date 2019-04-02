@@ -1,0 +1,11 @@
+- name: Set network profile parameter
+  set_fact:
+      network_profile: "{{ network_profile | default({}) | combine({ item.key: vars[item.value] }) }}"
+  with_items:
+      - {'key': 'network_plugin', 'value': 'network_plugin' }
+      - {'key': 'network_policy', 'value': 'network_policy' }
+      - {'key': 'pod_cidr', 'value': 'pod_cidr' }
+      - {'key': 'service_cidr', 'value': 'service_cidr' }
+      - {'key': 'dns_service_ip', 'value': 'dns_service_ip' }
+      - {'key': 'docker_bridge_cidr', 'value': 'docker_bridge_cidr' }
+  when: network_plugin is defined and {{ item.value }} is defined

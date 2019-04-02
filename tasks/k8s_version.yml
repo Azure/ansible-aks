@@ -1,0 +1,7 @@
+- name: Get all supported kubernetes version
+  azure_rm_aks_version:
+      location: "{{ location }}"
+  register: versions
+
+- set_fact:
+      kubernetes_version: "{{ versions.azure_aks_versions[-1] }}"

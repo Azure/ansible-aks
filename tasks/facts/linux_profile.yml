@@ -1,0 +1,3 @@
+- set_fact:
+      admin_username: "{{ profile.adminUsername }}"
+      ssh_key: "{{ profile.ssh.publicKeys[0].keyData }}"

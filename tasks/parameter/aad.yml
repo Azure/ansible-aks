@@ -1,0 +1,9 @@
+- name: Set aad profile parameter
+  set_fact:
+      aad_profile: "{{ aad_profile | default({}) | combine({ item.key: vars[item.value] }) }}"
+  with_items:
+      - {'key': 'client_app_id', 'value': 'aad_client_app_id' }
+      - {'key': 'server_app_id', 'value': 'aad_server_app_id' }
+      - {'key': 'server_app_secret', 'value': 'aad_server_app_secret' }
+      - {'key': 'tenant_id', 'value': 'aad_tenant_id' }
+  when: "aad_client_app_id is defined and aad_server_app_id is defined and aad_tenant_id is defined {{ item.value }} is defined"

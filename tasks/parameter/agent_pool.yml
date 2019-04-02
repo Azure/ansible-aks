@@ -1,0 +1,12 @@
+- name: Set agent pool profile parameter
+  set_fact:
+      agent_pool: "{{ agent_pool | default({}) | combine({ item.key: vars[item.value] }) }}"
+  with_items:
+      - {'key': 'name', 'value': 'nodepool_name' }
+      - {'key': 'count', 'value': 'node_count' }
+      - {'key': 'vm_size', 'value': 'node_vm_size' }
+      - {'key': 'os_disk_size_gb', 'value': 'node_osdisk_size_gb' }
+      - {'key': 'storage_profiles', 'value': 'storage_profile' }
+      - {'key': 'vnet_subnet_id', 'value': 'vnet_subnet_id' }
+      - {'key': 'os_type', 'value': 'os_type' }
+  when: "{{ item.value }} is defined"

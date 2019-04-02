@@ -1,0 +1,13 @@
+- set_fact:
+      http_application_routing_bak: "{{ profile.httpApplicationRouting.enabled }}"
+  when: "'httpApplicationRouting' in profile"
+
+- set_fact:
+      monitoring_bak: "{{ profile.omsagent.enabled }}"
+      workspace_resource_id_bak: "{{ profile.omsagent.config.logAnalyticsWorkspaceResourceID }}"
+  when: "'omsagent' in profile"
+
+- set_fact:
+      virtual_node_bak: "{{ profile.aciConnector.enabled }}"
+      virtual_node_subnet_id_bak: "{{ profile.aciConnector.config.SubnetName }}"
+  when: "'aciConnector' in profile"

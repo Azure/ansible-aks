@@ -1,0 +1,7 @@
+- set_fact:
+      "{{ item.name ~ '_bak' }}": "{{ profile[item.value] }}"
+  with_items:
+      - {name: 'aad_client_app_id', value: 'clientAppID'}
+      - {name: 'aad_server_app_id', value: 'serverAppID'}
+      - {name: 'aad_tenant_id', value: 'tenantID'}
+  when: "item.value in profile"

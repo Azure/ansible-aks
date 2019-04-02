@@ -1,0 +1,27 @@
+- name: Check addon enabled
+  set_fact:
+    "{{ item.key }}": "{{ {} | combine({ 'enabled': vars[item.value] }) }}"
+  with_items:
+    - {'key': 'ao_har', 'value': 'http_application_routing' }
+    - {'key': 'ao_m', 'value': 'monitoring' }
+    - {'key': 'ao_vn', 'value': 'virtual_node' }
+  when: "{{ item.value }} is defined"
+
+- name: Check monitoring parameter workspace_resource_id
+  set_fact:
+    ao_m: "{{ ao_m | combine({'log_analytics_workspace_resource_id': workspace_resource_id}) }}"
+  when: monitoring is defined and monitoring and workspace_resource_id is defined
+
+- name: Check virtual_node parameter virtual_node_subnet_id
+  set_fact:
+    ao_vn: "{{ ao_vn | combine({'subnet_resource_id': virtual_node_subnet_id}) }}"
+  when: virtual_node is defined and virtual_node and virtual_node_subnet_id is defined
+
+- name: "Construct addon parameter for aks {{ name }}"
+  set_fact:
+    addon: "{{ addon | default({}) | combine({item.key: vars[item.value] }) }}"
+  with_items:
+    - {'key': 'http_application_routing', 'value': 'ao_har' }
+    - {'key': 'monitoring', 'value': 'ao_m' }
+    - {'key': 'virtual_node', 'value': 'ao_vn' }
+  when: "{{ item.value }} is defined"
