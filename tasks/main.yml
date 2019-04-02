@@ -52,17 +52,17 @@
   when: virtual_node is defined and virtual_node and virtual_node_subnet_id is not defined
 
 # network plugin
-- name: "Check {{ item }} is set"
-  assert:
-      that:
-          - "{{ item }} is defined"
-  with_items:
-      - docker_bridge_cidr
-      - dns_service_ip
-      - service_cidr
-  when: network_plugin is defined
+# - name: "Check {{ item }} is set"
+#   assert:
+#       that:
+#           - "{{ item }} is defined"
+#   with_items:
+#       - docker_bridge_cidr
+#       - dns_service_ip
+#       - service_cidr
+#   when: network_plugin is defined
 
-- name: Get or create subnet for virtual node
+- name: Get or create subnet for network plugin
   include_tasks: subnet.yml
   vars:
       address: 10.240.0.0/16
@@ -73,10 +73,10 @@
 # network plugin - azure
 
 # network plugin - kubenet
-- name: Check pod_cidr is set
-  assert:
-      that: pod_cidr is defined
-  when: network_plugin is defined and network_plugin == 'kubenet'
+# - name: Check pod_cidr is set
+#   assert:
+#       that: pod_cidr is defined
+#   when: network_plugin is defined and network_plugin == 'kubenet'
 
 - include_tasks: parameter/main.yml
   name: Construct AKS module parameters
@@ -105,9 +105,6 @@
       addon: "{{ addon | default(omit) }}"
 #   check_mode: yes
   register: aks
-
-- debug:
-       var: aks
 
 # network plugin - kubenet
 - name: Associate network resources with the node subnet

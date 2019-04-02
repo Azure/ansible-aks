@@ -17,6 +17,8 @@ node_vm_size_bak: Standard_DS1_v2
 storage_profile_bak: ManagedDisks
 os_type_bak: Linux
 
+network_plugin_bak: kubenet
+
 parameter_list:
   - http_application_routing
   - monitoring

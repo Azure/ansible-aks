@@ -1,6 +1,3 @@
-- debug:
-      var: aks
-
 - set_fact:
       location_bak: "{{ aks.location }}"
       dns_prefix_bak: "{{ aks.properties.dnsPrefix }}"
