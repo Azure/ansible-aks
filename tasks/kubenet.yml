@@ -18,18 +18,10 @@
       rg_regex: '/resourceGroups/(.+?)/'
       vn_regex: '/virtualNetworks/(.+?)/'
 
-- name: Get subnet parameters
-  azure_rm_subnet_facts:
-      name: "{{ subnet_name[0] }}"
-      resource_group: "{{ subnet_rg[0] }}"
-      virtual_network_name: "{{ subnet_vn[0] }}"
-  register: subnet_instance
-
 - name: Associate network resources with the node subnet
   azure_rm_subnet:
-      name: "{{ subnet_instance.subnets[0].name }}"
-      address_prefix_cidr: "{{ subnet_instance.subnets[0].address_prefix_cidr }}"
-      resource_group: "{{  subnet_instance.subnets[0].resource_group }}"
-      virtual_network_name: "{{ subnet_instance.subnets[0].virtual_network_name }}"
+      name: "{{ subnet_name[0] }}"
+      resource_group: "{{  subnet_rg[0] }}"
+      virtual_network_name: "{{ subnet_vn[0] }}"
       security_group: "{{ nsg.ansible_facts.azure_securitygroups[0].id }}"
       route_table: "{{ routetable.route_tables[0].id }}"
