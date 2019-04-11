@@ -53,7 +53,7 @@ Example Playbook
 Install the role via:
 
 ```bash
-ansible-galaxy install git+https://github.com/yuwzho/aks
+ansible-galaxy install git+https://github.com/azure/ansible-aks
 ```
 
 Use the role in the playbook:
@@ -61,7 +61,7 @@ Use the role in the playbook:
     - hosts: localhost
       tasks:
           - include_role:
-               name: aks
+               name: ansible-aks
             vars:
                name: akscluster
                resource_group: aksroletest
