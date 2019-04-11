@@ -7,6 +7,7 @@ Requirements
 ------------
 
 The role uses Ansible azure modules, and miniest supported version is `2.8.0`.
+> Getting started with Ansible Azure modules with [Microsoft Docs](https://docs.microsoft.com/en-us/azure/ansible/ansible-overview)
 
 Role Variables
 --------------
