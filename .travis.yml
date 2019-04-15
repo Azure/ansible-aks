@@ -13,10 +13,7 @@ install:
   - if [ "$ANSIBLE_VERSION" == "latest" ]; then pip install ansible[azure]; else pip
     install ansible[azure]==$ANSIBLE_VERSION; fi
   - ansible --version
-  - pip install -I -r ./files/requirements-azure.txt
   - pip freeze
-  - git remote set-branches --add origin master
-  - git fetch
 
 script:
   - echo 'send notifiication'
