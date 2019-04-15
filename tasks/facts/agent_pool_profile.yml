@@ -13,4 +13,3 @@
       - {name: 'node_osdisk_size_gb_bak', value: 'osDiskSizeGB'}
       - {name: 'os_type', value: 'osType'}
   when: "item.value in profile"
-      

@@ -53,3 +53,4 @@ parameter_list:
   - vnet_subnet_id
   - aad_server_app_secret
   - client_secret
+  
