@@ -24,23 +24,23 @@ Role Variables
 | service_principal | | Loading from ansible-playbook, environment variable `AZURE_CLIENT_ID` or `~/.azure/credentials` | Service principal used for authentication to Azure APIs. |
 | client_secret | | Loading from ansible-playbook, environment variable `AZURE_SECRET` or `~/.azure/credentials` | Secret associated with the service principal. |
 | dns_prefix | | The same as `name` | Prefix for hostnames that are created. |
-| dns_service_ip | Required when `network_plugin` defined | | An IP address assigned to the Kubernetes DNS service. <br/>*This address must be within the Kubernetes service address range specified by `service_cidr`.* |
-| docker_bridge_cidr | Required when `network_plugin` defined | | A specific IP address and netmask for the Docker bridge, using standard CIDR notation.<br/> *This address must not be in any Subnet IP ranges, or the Kubernetes service address range.* |
+| dns_service_ip | | | An IP address assigned to the Kubernetes DNS service. <br/>*This address must be within the Kubernetes service address range specified by `service_cidr`.* |
+| docker_bridge_cidr | | | A specific IP address and netmask for the Docker bridge, using standard CIDR notation.<br/> *This address must not be in any Subnet IP ranges, or the Kubernetes service address range.* |
 | enable_rbac | | True | Enable Kubernetes Role-Based Access Control. |
 | http_application_routing | | False | Enable `http_application_routing` addon. Configure ingress with automatic public DNS name creation. |
 | kubernetes_version | | First value from `azure_rm_aks_version` module |  Version of Kubernetes to use for creating the cluster. |
 | location | | eastus | Region of the Kubernetes Service resource, will use `resource_group`'s location if not specified. <br/>*Location is required if resource group not exist*|
 | max_pods | | 110| The maximum number of pods deployable to a node. |
 | monitoring | | False | Enable `monitoring` addon. Turn on Log Analytics monitoring. |
-| network_plugin | | | The Kubernetes network plugin to use. |
+| network_plugin | | Choices:<br/>&nbsp;- **kubenet**<br/>&nbsp;- azure | The Kubernetes network plugin to use. |
 | network_policy | | | The Kubernetes network policy to use. Using together with "azure" network plugin. Specify `azure` for Azure network policy manager and `calico` for calico network policy controller. |
 | node_count | | 3 | Number of nodes in the Kubernetes node pool. |
 | node_osdisk_size_gb | | 30 | Size in GB of the OS disk for each node in the node pool. |
 | node_vm_size | | Standard_DS1_v2 | Size of Virtual Machines to create as Kubernetes nodes. |
 | nodepool_name | | nodepool1 | Node pool name, upto 12 alphanumeric characters. |
 | os_type | | Linux | |
-| pod_cidr | Required when `network_plugin` is `kubenet` | |  A CIDR notation IP range from which to assign pod IPs when kubenet is used. <br/>*This range must not overlap with any Subnet IP ranges.* |
-| service_cidr | Required when `network_plugin` defined | | A CIDR notation IP range from which to assign service cluster IPs. <br/>*This range must not overlap with any Subnet IP ranges.* |
+| pod_cidr | | |  A CIDR notation IP range from which to assign pod IPs when kubenet is used. <br/>*This range must not overlap with any Subnet IP ranges.* |
+| service_cidr | | | A CIDR notation IP range from which to assign service cluster IPs. <br/>*This range must not overlap with any Subnet IP ranges.* |
 | storage_profile | | ManagedDisks | |
 | ssh_key | | Loading from `~/.ssh/id_ras.pub` | Public key path or key contents to install on node VMs for SSH access. |
 | virtual_node | | False | Enable `virtual_node` aadon. Fast provisioning of pods with Azure Container Instance.  |
@@ -57,15 +57,29 @@ Install the role via:
 ansible-galaxy install azure.aks
 ```
 
-Use the role in the playbook:
+Use the role in the playbook to create the most default AKS:
 
-    - hosts: localhost
-      tasks:
-          - include_role:
-               name: azure.aks
-            vars:
-               name: akscluster
-               resource_group: aksroletest
+```yml
+- hosts: localhost
+  tasks:
+      - include_role:
+           name: azure.aks
+        vars:
+           name: akscluster
+           resource_group: aksroletest
+```
+Create an AKS with monitoring:
+
+```yml
+- hosts: localhost
+  tasks:
+      - include_role:
+           name: azure.aks
+        vars:
+           monitoring: yes
+           name: akscluster
+           resource_group: aksroletest
+```
 
 License
 -------
