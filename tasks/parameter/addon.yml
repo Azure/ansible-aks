@@ -1,7 +1,7 @@
 ---
 - name: Check addon enabled
   set_fact:
-    "{{ item.key }}": "{{ {} | combine({ 'enabled': vars[item.value] }) }}"
+    "{{ item.key }}": "{{ {} | combine({ 'enabled': lookup('vars', item.value) }) }}"
   with_items:
     - {'key': 'ao_har', 'value': 'http_application_routing'}
     - {'key': 'ao_m', 'value': 'monitoring'}
@@ -20,7 +20,7 @@
 
 - name: "Construct addon parameter for aks {{ name }}"
   set_fact:
-    addon: "{{ addon | default({}) | combine({item.key: vars[item.value] }) }}"
+    addon: "{{ addon | default({}) | combine({item.key: lookup('vars', item.value) }) }}"
   with_items:
     - {'key': 'http_application_routing', 'value': 'ao_har'}
     - {'key': 'monitoring', 'value': 'ao_m'}
