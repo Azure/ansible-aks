@@ -1,11 +1,12 @@
+---
 - name: Check addon enabled
   set_fact:
     "{{ item.key }}": "{{ {} | combine({ 'enabled': vars[item.value] }) }}"
   with_items:
-    - {'key': 'ao_har', 'value': 'http_application_routing' }
-    - {'key': 'ao_m', 'value': 'monitoring' }
-    - {'key': 'ao_vn', 'value': 'virtual_node' }
-  when: "{{ item.value }} is defined"
+    - {'key': 'ao_har', 'value': 'http_application_routing'}
+    - {'key': 'ao_m', 'value': 'monitoring'}
+    - {'key': 'ao_vn', 'value': 'virtual_node'}
+  when: vars[item.value] is defined
 
 - name: Check monitoring parameter workspace_resource_id
   set_fact:
@@ -21,7 +22,7 @@
   set_fact:
     addon: "{{ addon | default({}) | combine({item.key: vars[item.value] }) }}"
   with_items:
-    - {'key': 'http_application_routing', 'value': 'ao_har' }
-    - {'key': 'monitoring', 'value': 'ao_m' }
-    - {'key': 'virtual_node', 'value': 'ao_vn' }
-  when: "{{ item.value }} is defined"
+    - {'key': 'http_application_routing', 'value': 'ao_har'}
+    - {'key': 'monitoring', 'value': 'ao_m'}
+    - {'key': 'virtual_node', 'value': 'ao_vn'}
+  when: vars[item.value] is defined
