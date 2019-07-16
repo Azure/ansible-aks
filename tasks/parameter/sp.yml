@@ -22,7 +22,7 @@
 
 - name: Set service principal parameter
   set_fact:
-    sp: "{{ sp | default({}) | combine({ item.key: vars[item.value] }) }}"
+    sp: "{{ sp | default({}) | combine({ item.key: lookup('vars', item.value) }) }}"
   with_items:
     - {'key': 'client_id', 'value': 'service_principal'}
     - {'key': 'client_secret', 'value': 'client_secret'}
