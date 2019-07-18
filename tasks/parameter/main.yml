@@ -1,3 +1,4 @@
+---
 - include_tasks: addon.yml
 
 - include_tasks: sp.yml
@@ -8,22 +9,23 @@
 
 - include_tasks: aad.yml
 
-- set_fact:
-      dns_prefix: "{{ dns_prefix | default(name, true) }}"
+- name: Set dns_prefix
+  set_fact:
+    dns_prefix: "{{ dns_prefix | default(name, true) }}"
 
 - name: check if ssh file exists
-  stat: 
-      path: '~/.ssh/id_rsa.pub'
+  stat:
+    path: '~/.ssh/id_rsa.pub'
   register: ssh_file
   when: ssh_key is not defined
 
 - name: Loading SSH public key file in '~/.ssh/id_rsa.pub'
   set_fact:
-      ssh_key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+    ssh_key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
   when: ssh_key is not defined and ssh_file.stat.exists
 
 - fail:
-      msg: Cannot read ssh_key from input or load in ~/.ssh/id_ras.pub
+    msg: Cannot read ssh_key from input or load in ~/.ssh/id_ras.pub
   when: ssh_key is not defined
   name: ssh_key is unset
 

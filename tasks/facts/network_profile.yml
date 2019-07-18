@@ -1,10 +1,12 @@
-- set_fact:
-      "{{ item.name ~ '_bak' }}": "{{ profile[item.value] }}"
+---
+- name: Create network profile dictionary
+  set_fact:
+    "{{ item.name ~ '_bak' }}": "{{ profile[item.value] }}"
   with_items:
-      - {name: 'network_plugin', value: 'networkPlugin'}
-      - {name: 'network_policy', value: 'networkPolicy'}
-      - {name: 'pod_cidr', value: 'podCidr'}
-      - {name: 'service_cidr', value: 'serviceCidr'}
-      - {name: 'dns_service_ip', value: 'dnsServiceIP'}
-      - {name: 'docker_bridge_cidr', value: 'dockerBridgeCidr'}
+    - {name: 'network_plugin', value: 'networkPlugin'}
+    - {name: 'network_policy', value: 'networkPolicy'}
+    - {name: 'pod_cidr', value: 'podCidr'}
+    - {name: 'service_cidr', value: 'serviceCidr'}
+    - {name: 'dns_service_ip', value: 'dnsServiceIP'}
+    - {name: 'docker_bridge_cidr', value: 'dockerBridgeCidr'}
   when: "item.value in profile"
