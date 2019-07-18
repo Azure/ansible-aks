@@ -1,3 +1,4 @@
+---
 - name: Load service_principal from ansible auth parameter
   set_fact:
     service_principal: "{{ client_id }}"
