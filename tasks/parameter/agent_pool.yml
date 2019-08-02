@@ -1,7 +1,7 @@
 ---
 - name: Set agent pool profile parameter
   set_fact:
-    agent_pool: "{{ agent_pool | default({}) | combine({ item.key: vars[item.value] }) }}"
+    agent_pool: "{{ agent_pool | default({}) | combine({ item.key: lookup('vars', item.value) }) }}"
   with_items:
     - {'key': 'name', 'value': 'nodepool_name'}
     - {'key': 'count', 'value': 'node_count'}
