@@ -42,7 +42,7 @@ Role Variables
 | pod_cidr | | |  A CIDR notation IP range from which to assign pod IPs when kubenet is used. <br/>*This range must not overlap with any Subnet IP ranges.* |
 | service_cidr | | | A CIDR notation IP range from which to assign service cluster IPs. <br/>*This range must not overlap with any Subnet IP ranges.* |
 | storage_profile | | ManagedDisks | |
-| ssh_key | | Loading from `~/.ssh/id_ras.pub` | Public key path or key contents to install on node VMs for SSH access. |
+| ssh_key | | Loading from `~/.ssh/id_rsa.pub` | Public key path or key contents to install on node VMs for SSH access. |
 | virtual_node | | False | Enable `virtual_node` aadon. Fast provisioning of pods with Azure Container Instance.  |
 | virtual_node_subnet_id | | Create a new resource when `virtual_node` is `True`. | |
 | vnet_subnet_id | | Create a new resource when `virtual_node` is `True` or `network_plugin` defined. | The ID of a subnet in an existing VNet into which to deploy the cluster. |

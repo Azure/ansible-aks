@@ -25,7 +25,7 @@
   when: ssh_key is not defined and ssh_file.stat.exists
 
 - fail:
-    msg: Cannot read ssh_key from input or load in ~/.ssh/id_ras.pub
+    msg: Cannot read ssh_key from input or load in ~/.ssh/id_rsa.pub
   when: ssh_key is not defined
   name: ssh_key is unset
 
