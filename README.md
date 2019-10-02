@@ -43,7 +43,7 @@ Role Variables
 | service_cidr | | | A CIDR notation IP range from which to assign service cluster IPs. <br/>*This range must not overlap with any Subnet IP ranges.* |
 | storage_profile | | ManagedDisks | |
 | ssh_key | | Loading from `~/.ssh/id_rsa.pub` | Public key path or key contents to install on node VMs for SSH access. |
-| virtual_node | | False | Enable `virtual_node` aadon. Fast provisioning of pods with Azure Container Instance.  |
+| virtual_node | | False | Enable `virtual_node` addon. Fast provisioning of pods with Azure Container Instance.  |
 | virtual_node_subnet_id | | Create a new resource when `virtual_node` is `True`. | |
 | vnet_subnet_id | | Create a new resource when `virtual_node` is `True` or `network_plugin` defined. | The ID of a subnet in an existing VNet into which to deploy the cluster. |
 | workspace_resource_id | | Use the first Log Analytics Workspace in the `resource_group` or create a new resource when `monitoring` is `True`. | The resource ID of an existing Log Analytics Workspace to use for storing monitoring data. |
