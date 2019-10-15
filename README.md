@@ -1,12 +1,12 @@
 Azure Kubernetes Service
 =========
 
-A role help to create Kuberntes Service in Azure.
+A role to help create an Azure Kubernetes Service.
 
 Requirements
 ------------
 
-The role uses Ansible azure modules, and miniest supported version is `2.8.0`.
+The role uses Ansible Azure modules. The lowest supported version is `2.8.0`.
 > Getting started with Ansible Azure modules with [Microsoft Docs](https://docs.microsoft.com/en-us/azure/ansible/ansible-overview)
 
 Role Variables
