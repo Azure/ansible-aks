@@ -10,4 +10,5 @@
     - {'key': 'storage_profiles', 'value': 'storage_profile'}
     - {'key': 'vnet_subnet_id', 'value': 'vnet_subnet_id'}
     - {'key': 'os_type', 'value': 'os_type'}
+    - {'key': 'type', 'value': 'agent_pool_type'}
   when: vars[item.value] is defined

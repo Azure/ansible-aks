@@ -21,6 +21,7 @@ Role Variables
 | aad_server_app_secret | | | The secret of an Azure Active Directory server application. |
 | aad_tenant_id | | | The ID of an Azure Active Directory tenant. |
 | admin_username | | azureuser | User account to create on node VMs for SSH access. |
+| agent_pool_type | | AvailabilitySet | Possible values include VirtualMachineScaleSets and AvailabilitySet. |
 | service_principal | | Loading from ansible-playbook, environment variable `AZURE_CLIENT_ID` or `~/.azure/credentials` | Service principal used for authentication to Azure APIs. |
 | client_secret | | Loading from ansible-playbook, environment variable `AZURE_SECRET` or `~/.azure/credentials` | Secret associated with the service principal. |
 | dns_prefix | | The same as `name` | Prefix for hostnames that are created. |
@@ -29,6 +30,7 @@ Role Variables
 | enable_rbac | | True | Enable Kubernetes Role-Based Access Control. |
 | http_application_routing | | False | Enable `http_application_routing` addon. Configure ingress with automatic public DNS name creation. |
 | kubernetes_version | | First value from `azure_rm_aks_version` module |  Version of Kubernetes to use for creating the cluster. |
+| load_balancer_sku | | Basic |   The load balancer sku for the managed cluster. Standard or Basic |
 | location | | eastus | Region of the Kubernetes Service resource, will use `resource_group`'s location if not specified. <br/>*Location is required if resource group not exist*|
 | max_pods | | 110| The maximum number of pods deployable to a node. |
 | monitoring | | False | Enable `monitoring` addon. Turn on Log Analytics monitoring. |
@@ -40,6 +42,7 @@ Role Variables
 | nodepool_name | | nodepool1 | Node pool name, upto 12 alphanumeric characters. |
 | os_type | | Linux | |
 | pod_cidr | | |  A CIDR notation IP range from which to assign pod IPs when kubenet is used. <br/>*This range must not overlap with any Subnet IP ranges.* |
+| resource_tags | | | Dictionary of resource tags.  |
 | service_cidr | | | A CIDR notation IP range from which to assign service cluster IPs. <br/>*This range must not overlap with any Subnet IP ranges.* |
 | storage_profile | | ManagedDisks | |
 | ssh_key | | Loading from `~/.ssh/id_rsa.pub` | Public key path or key contents to install on node VMs for SSH access. |
@@ -80,6 +83,22 @@ Create an AKS with monitoring:
            name: akscluster
            resource_group: aksroletest
 ```
+Use of Resource Tags
+
+```yml
+- hosts: localhost
+  tasks:
+      - include_role:
+           name: azure.aks
+        vars:
+           name: akscluster
+           resource_group: aksroletest
+           resource_tags:
+              'service name': 'akscluster'
+              'service location': "{{ location }}"
+            
+```
+
 
 License
 -------

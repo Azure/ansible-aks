@@ -9,4 +9,5 @@
     - {'key': 'service_cidr', 'value': 'service_cidr'}
     - {'key': 'dns_service_ip', 'value': 'dns_service_ip'}
     - {'key': 'docker_bridge_cidr', 'value': 'docker_bridge_cidr'}
+    - {'key': 'load_balancer_sku', 'value': 'load_balancer_sku'}
   when: ( network_plugin is defined ) and ( vars[item.value] is defined )
