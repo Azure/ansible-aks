@@ -20,6 +20,8 @@ os_type_bak: Linux
 network_plugin_bak: kubenet
 load_balancer_sku: standard
 
+agent_pool_type: AvailabilitySet
+
 parameter_list:
   - http_application_routing
   - monitoring
@@ -55,3 +57,4 @@ parameter_list:
   - aad_server_app_secret
   - client_secret
   - load_balancer_sku
+  - agent_pool_type
