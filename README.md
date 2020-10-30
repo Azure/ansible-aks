@@ -29,6 +29,7 @@ Role Variables
 | enable_rbac | | True | Enable Kubernetes Role-Based Access Control. |
 | http_application_routing | | False | Enable `http_application_routing` addon. Configure ingress with automatic public DNS name creation. |
 | kubernetes_version | | First value from `azure_rm_aks_version` module |  Version of Kubernetes to use for creating the cluster. |
+| load_balancer_sku | | Basic |   The load balancer sku for the managed cluster. Standard or Basic |
 | location | | eastus | Region of the Kubernetes Service resource, will use `resource_group`'s location if not specified. <br/>*Location is required if resource group not exist*|
 | max_pods | | 110| The maximum number of pods deployable to a node. |
 | monitoring | | False | Enable `monitoring` addon. Turn on Log Analytics monitoring. |

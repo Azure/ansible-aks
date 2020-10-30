@@ -18,6 +18,7 @@ storage_profile_bak: ManagedDisks
 os_type_bak: Linux
 
 network_plugin_bak: kubenet
+load_balancer_sku: standard
 
 parameter_list:
   - http_application_routing
@@ -53,3 +54,4 @@ parameter_list:
   - vnet_subnet_id
   - aad_server_app_secret
   - client_secret
+  - load_balancer_sku
