@@ -103,6 +103,7 @@
     network_profile: "{{ network_profile | default(omit) }}"
     aad_profile: "{{ aad_profile | default(omit) }}"
     addon: "{{ addon | default(omit) }}"
+    tags: "{{ resource_tags | default(omit) }}"
   # check_mode: true
   register: aks
 
