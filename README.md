@@ -21,6 +21,7 @@ Role Variables
 | aad_server_app_secret | | | The secret of an Azure Active Directory server application. |
 | aad_tenant_id | | | The ID of an Azure Active Directory tenant. |
 | admin_username | | azureuser | User account to create on node VMs for SSH access. |
+| agent_pool_type | | AvailabilitySet | Possible values include VirtualMachineScaleSets and AvailabilitySet. |
 | service_principal | | Loading from ansible-playbook, environment variable `AZURE_CLIENT_ID` or `~/.azure/credentials` | Service principal used for authentication to Azure APIs. |
 | client_secret | | Loading from ansible-playbook, environment variable `AZURE_SECRET` or `~/.azure/credentials` | Secret associated with the service principal. |
 | dns_prefix | | The same as `name` | Prefix for hostnames that are created. |

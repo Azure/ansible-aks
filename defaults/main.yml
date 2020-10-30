@@ -19,6 +19,8 @@ os_type_bak: Linux
 
 network_plugin_bak: kubenet
 
+agent_pool_type: AvailabilitySet
+
 parameter_list:
   - http_application_routing
   - monitoring
@@ -53,3 +55,4 @@ parameter_list:
   - vnet_subnet_id
   - aad_server_app_secret
   - client_secret
+  - agent_pool_type
