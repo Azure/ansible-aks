@@ -40,6 +40,7 @@ Role Variables
 | nodepool_name | | nodepool1 | Node pool name, upto 12 alphanumeric characters. |
 | os_type | | Linux | |
 | pod_cidr | | |  A CIDR notation IP range from which to assign pod IPs when kubenet is used. <br/>*This range must not overlap with any Subnet IP ranges.* |
+| resource_tags | | Dictionary of resource tags ```resource_tags: 'environment': 'production'``` |
 | service_cidr | | | A CIDR notation IP range from which to assign service cluster IPs. <br/>*This range must not overlap with any Subnet IP ranges.* |
 | storage_profile | | ManagedDisks | |
 | ssh_key | | Loading from `~/.ssh/id_rsa.pub` | Public key path or key contents to install on node VMs for SSH access. |
